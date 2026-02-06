@@ -1,0 +1,16 @@
+$id: ixc.schema.annotation.v1
+type: object
+required:
+  - target
+  - label
+  - priority
+properties:
+  target:
+    type: string
+  label:
+    type: string
+  priority:
+    type: integer
+    minimum: 0
+    maximum: 3
+additionalProperties: false

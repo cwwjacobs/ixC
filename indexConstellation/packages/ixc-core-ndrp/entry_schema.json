@@ -1,0 +1,129 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "NDRP Entry Schema",
+  "type": "object",
+  "required": [
+    "role",
+    "content",
+    "intent",
+    "mode",
+    "meaning_preserved",
+    "density_goal",
+    "entropy_class"
+  ],
+  "properties": {
+    "raw_source": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "The original, unprocessed input prior to extraction."
+    },
+    "role": {
+      "type": "string",
+      "enum": [
+        "user",
+        "assistant",
+        "system"
+      ]
+    },
+    "content": {
+      "type": "string",
+      "description": "Cleaned, structured text after standardization."
+    },
+    "intent": {
+      "type": "string",
+      "description": "Purpose of the message (instruction, question, emotional, contextual, narrative, meta, etc.)"
+    },
+    "mode": {
+      "type": "string",
+      "enum": [
+        "instruction",
+        "conversation",
+        "narrative",
+        "reasoning",
+        "context",
+        "meta",
+        "emotion"
+      ],
+      "description": "Message type as determined during extraction."
+    },
+    "context": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "Clarified contextual information for the entry."
+    },
+    "reasoning_expanded": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "Optional expanded reasoning or clarification added during enhancement."
+    },
+    "metadata": {
+      "type": "object",
+      "properties": {
+        "source_id": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "timestamp": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "persona_style": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "lfsl_enabled": {
+          "type": "boolean"
+        }
+      },
+      "additionalProperties": true
+    },
+    "extraction_notes": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "Notes describing extraction decisions, assumptions, and interpretation."
+    },
+    "confidence": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1,
+      "description": "Confidence in meaning preservation and classification."
+    },
+    "meaning_preserved": {
+      "type": "boolean",
+      "description": "Indicates whether the refined content retains the meaning of the original raw source."
+    },
+    "density_goal": {
+      "type": "string",
+      "enum": [
+        "low",
+        "medium",
+        "high"
+      ],
+      "description": "Target density for enhancement."
+    },
+    "entropy_class": {
+      "type": "string",
+      "enum": [
+        "low",
+        "medium",
+        "high"
+      ],
+      "description": "Estimated entropy after standardization."
+    }
+  },
+  "$id": "ixc.schema.ndrp.entry.v1"
+}

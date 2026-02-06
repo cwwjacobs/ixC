@@ -1,0 +1,37 @@
+{
+  "users": [
+    {
+      "id": 1,
+      "name": "Alice Johnson",
+      "email": "alice@example.com",
+      "age": 28,
+      "active": true,
+      "address": {
+        "street": "123 Main St",
+        "city": "New York",
+        "state": "NY",
+        "zip": "10001"
+      },
+      "hobbies": ["reading", "hiking", "photography"]
+    },
+    {
+      "id": 2,
+      "name": "Bob Smith",
+      "email": "bob@example.com",
+      "age": 35,
+      "active": false,
+      "address": {
+        "street": "456 Oak Ave",
+        "city": "San Francisco",
+        "state": "CA",
+        "zip": "94102"
+      },
+      "hobbies": ["gaming", "coding", "music"]
+    }
+  ],
+  "metadata": {
+    "version": "1.0",
+    "timestamp": "2024-01-15T10:30:00Z",
+    "total": 2
+  }
+}

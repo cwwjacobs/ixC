@@ -1,0 +1,15 @@
+$id: ixc.schema.dataset.v1
+type: object
+required:
+  - id
+  - text
+properties:
+  id:
+    type: string
+  text:
+    type: string
+  annotations:
+    type: array
+    items:
+      type: object
+additionalProperties: false

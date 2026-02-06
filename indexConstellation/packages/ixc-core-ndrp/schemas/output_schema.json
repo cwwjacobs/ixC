@@ -1,0 +1,99 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "NDRP Standardized Entry",
+  "type": "object",
+  "description": "Post-standardization entry emitted by the pipeline and accepted by the validator.",
+  "properties": {
+    "role": {
+      "type": "string",
+      "const": "user",
+      "description": "All entries are emitted as user role."
+    },
+    "content": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Whitespace-normalized text content."
+    },
+    "intent": {
+      "type": "string",
+      "description": "Derived intent string based on mode.",
+      "enum": [
+        "request information or action",
+        "engage in dialogue",
+        "tell a story or describe events",
+        "explain logic or reasoning",
+        "provide contextual information",
+        "discuss the conversation itself",
+        "express feelings or emotions"
+      ]
+    },
+    "mode": {
+      "type": "string",
+      "description": "Normalized mode; unknown or intermediate inputs are remapped to context.",
+      "enum": [
+        "instruction",
+        "conversation",
+        "narrative",
+        "reasoning",
+        "context",
+        "meta",
+        "emotion"
+      ]
+    },
+    "context": {
+      "type": ["string", "null"],
+      "default": null,
+      "description": "Context placeholder; currently emitted as a required null field in every entry."
+    },
+    "meaning_preserved": {
+      "type": "boolean",
+      "default": true,
+      "description": "Semantic preservation flag emitted as true."
+    },
+    "density_goal": {
+      "type": "string",
+      "enum": ["low", "medium", "high"],
+      "default": "high",
+      "description": "Density default applied during standardization."
+    },
+    "entropy_class": {
+      "type": "string",
+      "enum": ["low", "medium", "high"],
+      "default": "low",
+      "description": "Entropy default applied during standardization."
+    },
+    "metadata": {
+      "type": "object",
+      "description": "Optional metadata propagated from extraction.",
+      "properties": {
+        "source_id": {
+          "type": "string"
+        },
+        "timestamp": {
+          "type": ["string", "null"]
+        },
+        "persona_style": {
+          "type": ["string", "null"]
+        },
+        "lfsl_enabled": {
+          "type": "boolean"
+        }
+      },
+      "additionalProperties": true
+    },
+    "reasoning_expanded": {
+      "type": ["string", "null"],
+      "description": "Reserved for enhancement; unused in v1."
+    }
+  },
+  "required": [
+    "role",
+    "content",
+    "intent",
+    "mode",
+    "meaning_preserved",
+    "density_goal",
+    "entropy_class"
+  ],
+  "additionalProperties": true
+}

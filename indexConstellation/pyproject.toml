@@ -1,0 +1,34 @@
+[build-system]
+requires = ["setuptools>=68.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "indexConstellation"
+version = "1.0.0"
+description = "Deterministic, auditable dataset curation from raw signal to training-ready export."
+readme = "README.md"
+license = {text = "MIT"}
+requires-python = ">=3.9"
+authors = [
+    {name = "cwwjacobs"}
+]
+
+dependencies = [
+    "jsonschema>=4.0",
+]
+
+[project.optional-dependencies]
+archivist = [
+    "cryptography>=41.0",
+    "keyring>=24.0",
+]
+full = [
+    "cryptography>=41.0",
+    "keyring>=24.0",
+]
+
+[project.scripts]
+ixc = "ixc.cli:main"
+
+[tool.setuptools.packages.find]
+include = ["ixc*", "pipeline*", "packages*"]

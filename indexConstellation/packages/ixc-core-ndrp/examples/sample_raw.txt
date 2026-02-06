@@ -1,0 +1,8 @@
+Hello, can you help me understand neural networks?
+Please explain how backpropagation works.
+I feel excited about learning AI and machine learning.
+Once upon a time, there was a small model that learned to predict words.
+Because neural networks use gradients, they can learn complex patterns.
+What is the difference between supervised and unsupervised learning?
+Thank you for your help!
+This conversation is really helping me understand the concepts better.

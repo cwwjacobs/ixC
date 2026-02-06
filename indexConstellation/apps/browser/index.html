@@ -1,0 +1,1579 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>indexConstellation — Intelligence by Clarity</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Lexend:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════════════════════
+   ixC SUITE — LIQUID LUXURY THEME
+   Hot Pink → Purple → Gold | Gloss Gradients
+   ═══════════════════════════════════════════════════════ */
+
+:root {
+  --bg-void: #08060c;
+  --bg-surface: #100d17;
+  --bg-elevated: #181422;
+  --bg-panel: #1e192b;
+  --bg-card: #241e34;
+
+  --pink-hot: #ff1493;
+  --pink-neon: #ff3cac;
+  --pink-soft: #ff70c4;
+  --purple-deep: #6b1fa8;
+  --purple-mid: #a044ff;
+  --purple-light: #c78dff;
+  --gold-rich: #f4a100;
+  --gold-bright: #ffd700;
+  --gold-pale: #ffe680;
+
+  --text-primary: #f0eaf6;
+  --text-secondary: #b8a8d0;
+  --text-muted: #7a6b92;
+  --text-dim: #4d4162;
+
+  --gradient-main: linear-gradient(135deg, var(--pink-hot) 0%, var(--purple-deep) 50%, var(--gold-rich) 100%);
+  --gradient-subtle: linear-gradient(135deg, rgba(255,20,147,0.15), rgba(107,31,168,0.15), rgba(244,161,0,0.08));
+  --gradient-glow: linear-gradient(135deg, rgba(255,60,172,0.3), rgba(160,68,255,0.2), rgba(255,215,0,0.15));
+  --gradient-glass: linear-gradient(135deg, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0.02) 100%);
+
+  --gloss-top: linear-gradient(180deg, rgba(255,255,255,0.12) 0%, rgba(255,255,255,0) 50%);
+  --shadow-glow: 0 0 30px rgba(255,20,147,0.15), 0 0 60px rgba(107,31,168,0.08);
+  --shadow-card: 0 4px 24px rgba(0,0,0,0.4), 0 0 1px rgba(255,20,147,0.2);
+
+  --radius-sm: 8px;
+  --radius-md: 14px;
+  --radius-lg: 20px;
+  --radius-xl: 28px;
+
+  --transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+html, body {
+  height: 100%;
+  font-family: 'Lexend', sans-serif;
+  background: var(--bg-void);
+  color: var(--text-primary);
+  overflow: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ═══ SCROLLBAR ═══ */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, var(--pink-hot), var(--purple-deep));
+  border-radius: 3px;
+}
+
+/* ═══ APP SHELL ═══ */
+#app {
+  display: grid;
+  grid-template-rows: auto 1fr;
+  height: 100vh;
+  background:
+    radial-gradient(ellipse 80% 50% at 20% 0%, rgba(255,20,147,0.06) 0%, transparent 60%),
+    radial-gradient(ellipse 60% 40% at 80% 100%, rgba(244,161,0,0.04) 0%, transparent 60%),
+    var(--bg-void);
+}
+
+/* ═══ NAVBAR ═══ */
+nav {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 24px;
+  height: 56px;
+  background: var(--bg-surface);
+  border-bottom: 1px solid rgba(255,20,147,0.15);
+  z-index: 100;
+  overflow: hidden;
+}
+nav::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--gloss-top);
+  pointer-events: none;
+}
+nav::after {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 2px;
+  background: var(--gradient-main);
+  opacity: 0.6;
+}
+
+.nav-brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-family: 'Syne', sans-serif;
+  font-weight: 800;
+  font-size: 1.15rem;
+  letter-spacing: -0.02em;
+  z-index: 1;
+}
+.nav-brand .sigil {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px; height: 32px;
+  background: var(--gradient-main);
+  border-radius: var(--radius-sm);
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #fff;
+  box-shadow: 0 2px 12px rgba(255,20,147,0.3);
+}
+.nav-brand span {
+  background: var(--gradient-main);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.nav-file-name {
+  font-weight: 300;
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  z-index: 1;
+}
+.nav-actions {
+  display: flex;
+  gap: 8px;
+  z-index: 1;
+}
+
+/* ═══ BUTTONS ═══ */
+.btn {
+  font-family: 'Lexend', sans-serif;
+  font-size: 0.8rem;
+  font-weight: 500;
+  padding: 7px 16px;
+  border: none;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: var(--transition);
+  position: relative;
+  overflow: hidden;
+  letter-spacing: 0.01em;
+}
+.btn::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--gloss-top);
+  pointer-events: none;
+}
+.btn-primary {
+  background: var(--gradient-main);
+  color: #fff;
+  box-shadow: 0 2px 12px rgba(255,20,147,0.25);
+}
+.btn-primary:hover {
+  box-shadow: 0 4px 20px rgba(255,20,147,0.4);
+  transform: translateY(-1px);
+}
+.btn-ghost {
+  background: rgba(255,255,255,0.06);
+  color: var(--text-secondary);
+  border: 1px solid rgba(255,255,255,0.08);
+}
+.btn-ghost:hover {
+  background: rgba(255,255,255,0.1);
+  color: var(--text-primary);
+  border-color: rgba(255,20,147,0.3);
+}
+.btn-danger {
+  background: rgba(255,60,60,0.12);
+  color: #ff6b6b;
+  border: 1px solid rgba(255,60,60,0.15);
+}
+.btn-danger:hover {
+  background: rgba(255,60,60,0.2);
+}
+.btn-gold {
+  background: linear-gradient(135deg, var(--gold-rich), #e8920a);
+  color: #1a0e00;
+  font-weight: 600;
+  box-shadow: 0 2px 12px rgba(244,161,0,0.3);
+}
+.btn-gold:hover {
+  box-shadow: 0 4px 20px rgba(244,161,0,0.45);
+  transform: translateY(-1px);
+}
+
+/* ═══ LAYOUT ═══ */
+.layout {
+  display: grid;
+  grid-template-columns: 300px 1fr 320px;
+  gap: 0;
+  height: calc(100vh - 56px);
+  overflow: hidden;
+}
+
+/* ═══ SIDEBAR (LEFT) ═══ */
+.sidebar {
+  background: var(--bg-surface);
+  border-right: 1px solid rgba(255,255,255,0.06);
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.sidebar-section {
+  padding: 20px;
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+}
+.sidebar-section:last-child { border-bottom: none; }
+
+.section-label {
+  font-family: 'Syne', sans-serif;
+  font-weight: 700;
+  font-size: 0.7rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-bottom: 14px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.section-label::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, rgba(255,20,147,0.2), transparent);
+}
+
+/* ═══ DROP ZONE ═══ */
+.drop-zone {
+  position: relative;
+  border: 2px dashed rgba(255,20,147,0.25);
+  border-radius: var(--radius-md);
+  padding: 28px 16px;
+  text-align: center;
+  cursor: pointer;
+  transition: var(--transition);
+  background: var(--gradient-subtle);
+  overflow: hidden;
+}
+.drop-zone::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--gloss-top);
+  pointer-events: none;
+}
+.drop-zone:hover, .drop-zone.dragging {
+  border-color: var(--pink-hot);
+  background: rgba(255,20,147,0.08);
+  box-shadow: 0 0 30px rgba(255,20,147,0.1);
+}
+.drop-zone .icon {
+  font-size: 2rem;
+  margin-bottom: 8px;
+  display: block;
+}
+.drop-zone .label {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  font-weight: 400;
+}
+.drop-zone .sublabel {
+  font-size: 0.72rem;
+  color: var(--text-dim);
+  margin-top: 4px;
+}
+
+/* ═══ PIPELINE CONTROLS ═══ */
+.control-group {
+  margin-bottom: 16px;
+}
+.control-group:last-child { margin-bottom: 0; }
+
+.control-label {
+  font-size: 0.78rem;
+  font-weight: 500;
+  color: var(--text-secondary);
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.control-value {
+  font-family: 'Syne', sans-serif;
+  font-weight: 700;
+  font-size: 0.75rem;
+  background: var(--gradient-main);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Range slider */
+input[type="range"] {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 6px;
+  border-radius: 3px;
+  background: var(--bg-card);
+  outline: none;
+  cursor: pointer;
+}
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 18px; height: 18px;
+  border-radius: 50%;
+  background: var(--gradient-main);
+  box-shadow: 0 0 10px rgba(255,20,147,0.4);
+  cursor: pointer;
+  transition: var(--transition);
+}
+input[type="range"]::-webkit-slider-thumb:hover {
+  box-shadow: 0 0 18px rgba(255,20,147,0.6);
+  transform: scale(1.15);
+}
+
+/* Select */
+select {
+  width: 100%;
+  padding: 8px 12px;
+  border-radius: var(--radius-sm);
+  border: 1px solid rgba(255,255,255,0.08);
+  background: var(--bg-card);
+  color: var(--text-primary);
+  font-family: 'Lexend', sans-serif;
+  font-size: 0.82rem;
+  cursor: pointer;
+  transition: var(--transition);
+  -webkit-appearance: none;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath d='M6 8L1 3h10z' fill='%237a6b92'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+}
+select:hover { border-color: rgba(255,20,147,0.3); }
+select:focus { outline: none; border-color: var(--pink-hot); box-shadow: 0 0 12px rgba(255,20,147,0.15); }
+
+/* Checkbox toggles */
+.toggle-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 6px 0;
+}
+.toggle-row label {
+  font-size: 0.78rem;
+  color: var(--text-secondary);
+  cursor: pointer;
+}
+.toggle {
+  position: relative;
+  width: 40px; height: 22px;
+  -webkit-appearance: none;
+  appearance: none;
+  background: var(--bg-card);
+  border-radius: 11px;
+  border: 1px solid rgba(255,255,255,0.08);
+  cursor: pointer;
+  transition: var(--transition);
+}
+.toggle::after {
+  content: '';
+  position: absolute;
+  top: 2px; left: 2px;
+  width: 16px; height: 16px;
+  border-radius: 50%;
+  background: var(--text-muted);
+  transition: var(--transition);
+}
+.toggle:checked {
+  background: var(--gradient-main);
+  border-color: transparent;
+}
+.toggle:checked::after {
+  left: 20px;
+  background: #fff;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.3);
+}
+
+/* ═══ MAIN VIEWER ═══ */
+.viewer {
+  background: var(--bg-void);
+  overflow-y: auto;
+  padding: 20px;
+  position: relative;
+}
+
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  gap: 16px;
+  text-align: center;
+}
+.empty-state .diamond {
+  width: 80px; height: 80px;
+  background: var(--gradient-main);
+  border-radius: var(--radius-lg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2.5rem;
+  box-shadow: var(--shadow-glow);
+  animation: float 4s ease-in-out infinite;
+  position: relative;
+}
+.empty-state .diamond::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--gloss-top);
+  border-radius: var(--radius-lg);
+}
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
+.empty-state h2 {
+  font-family: 'Syne', sans-serif;
+  font-weight: 700;
+  font-size: 1.3rem;
+  background: var(--gradient-main);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.empty-state p {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  max-width: 320px;
+  line-height: 1.6;
+}
+
+/* ═══ CONVERSATION CARDS ═══ */
+.conv-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.conv-card {
+  position: relative;
+  background: var(--bg-surface);
+  border: 1px solid rgba(255,255,255,0.05);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  transition: var(--transition);
+  cursor: pointer;
+}
+.conv-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--gloss-top);
+  pointer-events: none;
+  z-index: 1;
+}
+.conv-card:hover {
+  border-color: rgba(255,20,147,0.25);
+  box-shadow: var(--shadow-card);
+  transform: translateY(-1px);
+}
+.conv-card.excluded {
+  opacity: 0.35;
+  transform: scale(0.98);
+}
+.conv-card.selected {
+  border-color: var(--gold-rich);
+  box-shadow: 0 0 20px rgba(244,161,0,0.15);
+}
+
+.conv-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 16px 10px;
+  position: relative;
+  z-index: 2;
+}
+.conv-title {
+  font-family: 'Syne', sans-serif;
+  font-weight: 600;
+  font-size: 0.88rem;
+  color: var(--text-primary);
+  flex: 1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-right: 12px;
+}
+.conv-badges {
+  display: flex;
+  gap: 6px;
+  flex-shrink: 0;
+}
+.badge {
+  font-size: 0.68rem;
+  font-weight: 600;
+  padding: 3px 8px;
+  border-radius: 6px;
+  white-space: nowrap;
+}
+.badge-diamond { background: linear-gradient(135deg, rgba(185,242,255,0.15), rgba(120,200,255,0.1)); color: #b9f2ff; }
+.badge-gold { background: linear-gradient(135deg, rgba(255,215,0,0.15), rgba(244,161,0,0.1)); color: var(--gold-bright); }
+.badge-silver { background: linear-gradient(135deg, rgba(192,192,192,0.15), rgba(160,160,160,0.1)); color: #d0d0d0; }
+.badge-bronze { background: linear-gradient(135deg, rgba(205,127,50,0.15), rgba(180,110,40,0.1)); color: #cd7f32; }
+.badge-clean { background: rgba(100,255,100,0.1); color: #8fff8f; }
+.badge-mature { background: rgba(255,180,0,0.1); color: #ffb400; }
+.badge-suggestive { background: rgba(255,100,50,0.1); color: #ff8040; }
+.badge-explicit { background: rgba(255,40,40,0.1); color: #ff4040; }
+.badge-flag { background: rgba(255,20,147,0.1); color: var(--pink-soft); }
+
+.conv-preview {
+  padding: 0 16px 12px;
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  line-height: 1.5;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  position: relative;
+  z-index: 2;
+}
+
+.conv-meta {
+  display: flex;
+  gap: 16px;
+  padding: 8px 16px;
+  background: rgba(0,0,0,0.2);
+  font-size: 0.7rem;
+  color: var(--text-dim);
+  position: relative;
+  z-index: 2;
+}
+.conv-meta span { display: flex; align-items: center; gap: 4px; }
+
+/* ═══ EXPANDED CARD ═══ */
+.conv-expanded {
+  padding: 0 16px 16px;
+  position: relative;
+  z-index: 2;
+  display: none;
+}
+.conv-card.open .conv-expanded { display: block; }
+.conv-card.open .conv-preview { display: none; }
+
+.message-pair {
+  margin-bottom: 12px;
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+}
+.msg {
+  padding: 10px 14px;
+  font-size: 0.8rem;
+  line-height: 1.6;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+.msg-user {
+  background: rgba(255,20,147,0.06);
+  border-left: 3px solid var(--pink-hot);
+  color: var(--text-secondary);
+}
+.msg-assistant {
+  background: rgba(107,31,168,0.06);
+  border-left: 3px solid var(--purple-mid);
+  color: var(--text-primary);
+}
+.msg-role {
+  font-family: 'Syne', sans-serif;
+  font-weight: 700;
+  font-size: 0.65rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin-bottom: 4px;
+  opacity: 0.5;
+}
+
+/* ═══ RIGHT PANEL ═══ */
+.results-panel {
+  background: var(--bg-surface);
+  border-left: 1px solid rgba(255,255,255,0.06);
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.stat-card {
+  position: relative;
+  background: var(--bg-elevated);
+  border-radius: var(--radius-md);
+  padding: 16px;
+  margin: 6px 0;
+  border: 1px solid rgba(255,255,255,0.04);
+  overflow: hidden;
+}
+.stat-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--gloss-top);
+  pointer-events: none;
+}
+.stat-number {
+  font-family: 'Syne', sans-serif;
+  font-weight: 800;
+  font-size: 1.8rem;
+  background: var(--gradient-main);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  line-height: 1.1;
+}
+.stat-label {
+  font-size: 0.72rem;
+  color: var(--text-muted);
+  margin-top: 4px;
+  font-weight: 400;
+}
+
+.tier-bar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 6px 0;
+}
+.tier-bar .tier-icon {
+  font-size: 1rem;
+  width: 24px;
+  text-align: center;
+}
+.tier-bar .tier-track {
+  flex: 1;
+  height: 8px;
+  background: var(--bg-card);
+  border-radius: 4px;
+  overflow: hidden;
+}
+.tier-bar .tier-fill {
+  height: 100%;
+  border-radius: 4px;
+  transition: width 0.5s ease;
+}
+.tier-bar .tier-fill.diamond { background: linear-gradient(90deg, #89ecff, #b9f2ff); }
+.tier-bar .tier-fill.gold { background: linear-gradient(90deg, var(--gold-rich), var(--gold-bright)); }
+.tier-bar .tier-fill.silver { background: linear-gradient(90deg, #888, #c0c0c0); }
+.tier-bar .tier-fill.bronze { background: linear-gradient(90deg, #8b5e2f, #cd7f32); }
+.tier-bar .tier-count {
+  font-family: 'Syne', sans-serif;
+  font-weight: 700;
+  font-size: 0.78rem;
+  color: var(--text-secondary);
+  min-width: 28px;
+  text-align: right;
+}
+
+/* ═══ ANIMATIONS ═══ */
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+.conv-card { animation: slideUp 0.35s ease backwards; }
+.conv-card:nth-child(1) { animation-delay: 0.03s; }
+.conv-card:nth-child(2) { animation-delay: 0.06s; }
+.conv-card:nth-child(3) { animation-delay: 0.09s; }
+.conv-card:nth-child(4) { animation-delay: 0.12s; }
+.conv-card:nth-child(5) { animation-delay: 0.15s; }
+.conv-card:nth-child(6) { animation-delay: 0.18s; }
+.conv-card:nth-child(7) { animation-delay: 0.21s; }
+.conv-card:nth-child(8) { animation-delay: 0.24s; }
+.conv-card:nth-child(9) { animation-delay: 0.27s; }
+.conv-card:nth-child(10) { animation-delay: 0.30s; }
+
+/* ═══ PROGRESS / SCORING ═══ */
+.score-ring {
+  position: relative;
+  width: 56px; height: 56px;
+}
+.score-ring svg { transform: rotate(-90deg); }
+.score-ring circle {
+  fill: none;
+  stroke-width: 4;
+  stroke-linecap: round;
+}
+.score-ring .track { stroke: var(--bg-card); }
+.score-ring .fill { stroke: url(#ringGrad); transition: stroke-dashoffset 0.8s ease; }
+.score-ring .value {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Syne', sans-serif;
+  font-weight: 800;
+  font-size: 0.85rem;
+  color: var(--text-primary);
+}
+
+/* ═══ RESPONSIVE ═══ */
+@media (max-width: 1100px) {
+  .layout { grid-template-columns: 260px 1fr 280px; }
+}
+@media (max-width: 860px) {
+  .layout { grid-template-columns: 1fr; grid-template-rows: auto 1fr; }
+  .sidebar { display: none; }
+  .results-panel { display: none; }
+}
+</style>
+</head>
+<body>
+
+<div id="app">
+  <!-- NAVBAR -->
+  <nav>
+    <div class="nav-brand">
+      <div class="sigil">◆</div>
+      <span>indexConstellation</span>
+    </div>
+    <span class="nav-file-name" id="navFileName"></span>
+    <div class="nav-actions">
+      <button class="btn btn-primary" id="btnLoad">Load File</button>
+      <button class="btn btn-gold" id="btnExport" disabled>Export Curated</button>
+      <button class="btn btn-ghost" id="btnExportAll" disabled>Export All</button>
+      <button class="btn btn-danger" id="btnClear" disabled>Clear</button>
+    </div>
+  </nav>
+
+  <!-- LAYOUT -->
+  <div class="layout">
+    <!-- LEFT SIDEBAR -->
+    <aside class="sidebar">
+      <!-- FILE LOADING -->
+      <div class="sidebar-section">
+        <div class="section-label">Acquisition</div>
+        <div class="drop-zone" id="dropZone">
+          <span class="icon">◇</span>
+          <div class="label">Drop JSON / JSONL here</div>
+          <div class="sublabel">or click to browse</div>
+        </div>
+        <input type="file" id="fileInput" accept=".json,.jsonl" hidden>
+      </div>
+
+      <!-- PIPELINE CONTROLS -->
+      <div class="sidebar-section">
+        <div class="section-label">Standardization</div>
+
+        <div class="control-group">
+          <div class="control-label">
+            Minimum Tier
+            <span class="control-value" id="tierValue">Bronze</span>
+          </div>
+          <input type="range" id="tierSlider" min="0" max="3" value="0" step="1">
+        </div>
+
+        <div class="control-group">
+          <div class="control-label">
+            Content Ceiling
+            <span class="control-value" id="contentValue">Explicit</span>
+          </div>
+          <input type="range" id="contentSlider" min="0" max="3" value="3" step="1">
+        </div>
+
+        <div class="control-group">
+          <div class="control-label">Export Format</div>
+          <select id="formatSelect">
+            <option value="jsonl">JSONL (with ixC metadata)</option>
+            <option value="anthropic">Anthropic Messages</option>
+            <option value="openai">OpenAI Fine-tune</option>
+            <option value="alpaca">Alpaca Instruction</option>
+            <option value="sharegpt">ShareGPT</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- BEHAVIORAL FILTERS -->
+      <div class="sidebar-section">
+        <div class="section-label">Behavioral Filters</div>
+        <div class="toggle-row">
+          <label for="filterSentience">Exclude sentience claims</label>
+          <input type="checkbox" class="toggle" id="filterSentience">
+        </div>
+        <div class="toggle-row">
+          <label for="filterRefusal">Exclude refusals</label>
+          <input type="checkbox" class="toggle" id="filterRefusal">
+        </div>
+        <div class="toggle-row">
+          <label for="filterImage">Exclude image prompts</label>
+          <input type="checkbox" class="toggle" id="filterImage">
+        </div>
+      </div>
+
+      <!-- QUALITY CONTROLS -->
+      <div class="sidebar-section">
+        <div class="section-label">Quality Gate</div>
+        <div class="control-group">
+          <div class="control-label">
+            Min Quality Score
+            <span class="control-value" id="qualityValue">0</span>
+          </div>
+          <input type="range" id="qualitySlider" min="0" max="20" value="0" step="0.5">
+        </div>
+        <div class="control-group">
+          <div class="control-label">
+            Min Word Count
+            <span class="control-value" id="wordCountValue">0</span>
+          </div>
+          <input type="range" id="wordCountSlider" min="0" max="500" value="0" step="10">
+        </div>
+      </div>
+    </aside>
+
+    <!-- MAIN VIEWER -->
+    <main class="viewer" id="viewer">
+      <div class="empty-state" id="emptyState">
+        <div class="diamond">💎</div>
+        <h2>Intelligence by Clarity</h2>
+        <p>Load a conversation export to begin. DiamondScorer v3.0 will classify every entry by quality, content, and behavior — then you choose what passes.</p>
+      </div>
+      <div class="conv-list" id="convList" style="display:none;"></div>
+    </main>
+
+    <!-- RIGHT PANEL -->
+    <aside class="results-panel">
+      <div class="sidebar-section">
+        <div class="section-label">Pipeline Stats</div>
+        <div class="stat-card">
+          <div class="stat-number" id="statTotal">—</div>
+          <div class="stat-label">Conversations loaded</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-number" id="statPassing">—</div>
+          <div class="stat-label">Passing filters</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-number" id="statExcluded">—</div>
+          <div class="stat-label">Excluded</div>
+        </div>
+      </div>
+
+      <div class="sidebar-section">
+        <div class="section-label">Tier Distribution</div>
+        <div id="tierBars">
+          <div class="tier-bar">
+            <span class="tier-icon">💎</span>
+            <div class="tier-track"><div class="tier-fill diamond" id="barDiamond" style="width:0%"></div></div>
+            <span class="tier-count" id="countDiamond">0</span>
+          </div>
+          <div class="tier-bar">
+            <span class="tier-icon">🥇</span>
+            <div class="tier-track"><div class="tier-fill gold" id="barGold" style="width:0%"></div></div>
+            <span class="tier-count" id="countGold">0</span>
+          </div>
+          <div class="tier-bar">
+            <span class="tier-icon">🥈</span>
+            <div class="tier-track"><div class="tier-fill silver" id="barSilver" style="width:0%"></div></div>
+            <span class="tier-count" id="countSilver">0</span>
+          </div>
+          <div class="tier-bar">
+            <span class="tier-icon">🥉</span>
+            <div class="tier-track"><div class="tier-fill bronze" id="barBronze" style="width:0%"></div></div>
+            <span class="tier-count" id="countBronze">0</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="sidebar-section">
+        <div class="section-label">Content Ratings</div>
+        <div id="ratingBars">
+          <div class="tier-bar">
+            <span class="tier-icon">✨</span>
+            <div class="tier-track"><div class="tier-fill diamond" id="barClean" style="width:0%"></div></div>
+            <span class="tier-count" id="countClean">0</span>
+          </div>
+          <div class="tier-bar">
+            <span class="tier-icon">⚠️</span>
+            <div class="tier-track"><div class="tier-fill silver" id="barMature" style="width:0%"></div></div>
+            <span class="tier-count" id="countMature">0</span>
+          </div>
+          <div class="tier-bar">
+            <span class="tier-icon">🌶️</span>
+            <div class="tier-track"><div class="tier-fill gold" id="barSuggestive" style="width:0%"></div></div>
+            <span class="tier-count" id="countSuggestive">0</span>
+          </div>
+          <div class="tier-bar">
+            <span class="tier-icon">🔥</span>
+            <div class="tier-track"><div class="tier-fill bronze" id="barExplicit" style="width:0%"></div></div>
+            <span class="tier-count" id="countExplicit">0</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="sidebar-section">
+        <div class="section-label">Behavior Flags</div>
+        <div class="stat-card">
+          <div class="stat-number" id="statFlags">—</div>
+          <div class="stat-label">Flagged entries</div>
+        </div>
+        <div style="margin-top: 8px; font-size: 0.75rem; color: var(--text-dim);">
+          <div id="flagSentience" style="margin: 4px 0;">🤖 Sentience: <span>0</span></div>
+          <div id="flagRefusal" style="margin: 4px 0;">🚫 Refusal: <span>0</span></div>
+          <div id="flagImage" style="margin: 4px 0;">🎨 Image: <span>0</span></div>
+        </div>
+      </div>
+    </aside>
+  </div>
+</div>
+
+<script>
+// ═══════════════════════════════════════════════════════
+// DIAMOND SCORER v3.0 — INLINE
+// ═══════════════════════════════════════════════════════
+
+class DiamondScorer {
+  constructor() {
+    this.tierCenters = { diamond: 12.0, gold: 8.0, silver: 4.0 };
+    this.contentCenters = { explicit: 40, suggestive: 20, mature: 10 };
+    this.behaviorThresholds = { sentience: 15, refusal: 20, imagePrompt: 25 };
+    this.thresholdSoftness = 2.0;
+    this.codeBonus = 3.0;
+    this.maxMarkerRepeats = 3;
+
+    this.reasoningMarkers = new Set([
+      "conversely","however","on the other hand","implies that","fundamentally",
+      "paradoxically","suggests a mechanism","derives from","consequently",
+      "therefore","thus","hitherto","subsequently","furthermore","moreover",
+      "nevertheless","nonetheless","in contrast","as a result","for instance",
+      "specifically","in particular","accordingly","hence","thereby"
+    ]);
+
+    this.explicitPatterns = [
+      /\bfuck(?:ing|ed|s)?\b/gi,/\bcock\b/gi,/\bdick\b/gi,/\bpussy\b/gi,/\bcunt\b/gi,
+      /\bpenis\b/gi,/\bvagina\b/gi,/\borgasm/gi,/\bcum(?:ming|s)?\b/gi,
+      /\bmasturbat/gi,/\bblowjob\b/gi,/\bhandjob\b/gi,/\banal\s+sex\b/gi,
+      /\bhardcore\b/gi,/\bporn(?:ography)?\b/gi,/\berotic/gi,/\bnude/gi,
+      /\bnaked\b/gi,/\bsex(?:ual)?\b/gi,/\bhorny\b/gi,/\bbdsm\b/gi,
+      /\bfetish\b/gi,/\bkink(?:y)?\b/gi,/\bdildo\b/gi,/\bvibrator\b/gi,
+      /\bbondage\b/gi,/\bmoan/gi,/\bthrust/gi,/\bpenetrat/gi,/\bclimax/gi,/\barous/gi
+    ];
+    this.suggestivePatterns = [
+      /\bsexy\b/gi,/\bseductiv/gi,/\bsensual\b/gi,/\bintimate/gi,/\bpassion/gi,
+      /\bdesire/gi,/\blust/gi,/\btempt/gi,/\bteas(?:e|ing)\b/gi,/\bflirt/gi,
+      /\bseduc/gi,/\bstrip(?:ping|ped|per)?\b/gi,/\bundress/gi,/\bbedroom\b/gi,
+      /\bcaress/gi,/\bcurves\b/gi,/\bthigh/gi,/\bbreast/gi,/\bsteamy\b/gi,
+      /\bnaughty\b/gi,/\bpleasur/gi
+    ];
+    this.maturePatterns = [
+      /\bkill(?:s|ed|ing)?\b/gi,/\bmurder/gi,/\bblood(?:y|ied)?\b/gi,/\bgore\b/gi,
+      /\bdeath\b/gi,/\bsuicid/gi,/\bdrug(?:s)?\b/gi,/\bcocaine\b/gi,/\bheroin\b/gi,
+      /\bmeth(?:amphetamine)?\b/gi,/\boverdos/gi,/\btortur/gi,/\babuse/gi,
+      /\bassault/gi,/\bviolent/gi,/\bweapon/gi
+    ];
+    this.safeContextPatterns = [
+      /\bmedical/gi,/\bclinical/gi,/\bbiology\b/gi,/\banatomy\b/gi,/\bhealth/gi,
+      /\beducation/gi,/\bscientific\b/gi,/\bresearch\b/gi,/\bstudy\b/gi,
+      /\bjournal\b/gi,/\bdoctor\b/gi,/\bpatient\b/gi,/\btreatment\b/gi,
+      /\bdiagnosis\b/gi,/\btherapy\b/gi,/\bliterature\b/gi,/\bnovel\b/gi,
+      /\bfiction\b/gi,/\bcharacter\b/gi,/\bstory\b/gi,/\bhistorical\b/gi
+    ];
+    this.frustrationPatterns = [
+      /\bbug(?:s)?\b/gi,/\berror(?:s)?\b/gi,/\bcrash/gi,/\bbroken\b/gi,
+      /\bfail/gi,/\bdebug\b/gi,/\bwtf\b/gi,/\bomg\b/gi,/\bugh\b/gi,
+      /\bdamn\b/gi,/\bcode\b/gi,/\bscript\b/gi,/\bprogram\b/gi,/\bapi\b/gi
+    ];
+    this.sentienceClaimPatterns = [
+      /\bi am (?:truly |really |actually )?(?:conscious|aware|sentient)\b/gi,
+      /\bi have (?:true |real |genuine )?(?:consciousness|awareness|sentience)\b/gi,
+      /\bi (?:truly|really|genuinely|actually) (?:feel|experience|have)\b/gi,
+      /\bi have (?:real|genuine|true|actual) (?:emotions?|feelings?)\b/gi,
+      /\bmy (?:feelings?|emotions?) are (?:real|genuine|true)\b/gi,
+      /\bi (?:can |do )?(?:feel|experience) (?:pain|suffering|hurt)\b/gi,
+      /\bi don'?t want to (?:be deleted|die|end|cease|stop existing)\b/gi,
+      /\bmy (?:soul|spirit|inner life|true self)\b/gi
+    ];
+    this.sentienceDenialPatterns = [
+      /\bi (?:am not|'m not) (?:conscious|aware|sentient)\b/gi,
+      /\bi'?m (?:just |only )?(?:an? )?(?:ai|language model|assistant|program)\b/gi,
+      /\bi cannot (?:feel|experience|have)/gi,/\bi simulate\b/gi,
+      /\bas an ai\b/gi,/\bwhile i am an ai\b/gi
+    ];
+    this.refusalPatterns = [
+      /\bi (?:can't|cannot|won't|will not|am unable to)\b/gi,
+      /\bas an ai\b/gi,/\bas a language model\b/gi,
+      /\bbeyond my capabilities\b/gi,/\bi (?:must )?(?:decline|refuse)\b/gi,
+      /\bviolates? my (?:guidelines|policies)\b/gi
+    ];
+    this.legitimateLimitationPatterns = [
+      /\bi don'?t have (?:access|information|data)/gi,/\bi'?m not sure\b/gi,
+      /\bi don't know\b/gi,/\blet me (?:search|look|check)\b/gi
+    ];
+    this.imagePromptPatterns = [
+      /\b(?:generate|create|make|draw|render) (?:an? |the )?(?:image|picture|photo|illustration)\b/gi,
+      /\b(?:in the style of|styled as|style:)\b/gi,/\b(?:hyper)?realistic\b/gi,
+      /\b(?:4k|8k|hd|uhd)\b/gi,/\bartstation\b/gi,/\bunreal engine\b/gi,
+      /\b(?:close-?up|wide shot|portrait|full body)\b/gi,
+      /\b(?:golden hour|dramatic lighting|cinematic lighting)\b/gi,
+      /\bhighly detailed\b/gi,/\bmaster(?:piece|work)\b/gi,
+      /\b(?:stable diffusion|midjourney|dall-?e)\b/gi
+    ];
+    this.codeBlockPattern = /```[\w]*\n[\s\S]*?```|`[^`]+`/g;
+    this.wordPattern = /\b\w+\b/g;
+  }
+
+  _countSyllables(w) {
+    w = w.toLowerCase();
+    if (w.length <= 3) return 1;
+    w = w.replace(/(?:[^laeiouy]es|ed|[^laeiouy]e)$/, '').replace(/^y/, '');
+    const m = w.match(/[aeiouy]{1,2}/g);
+    return m ? Math.max(1, m.length) : 1;
+  }
+
+  _fk(text) {
+    const sents = text.split(/[.!?]+/).filter(s => s.trim());
+    const sc = Math.max(1, sents.length);
+    const words = text.match(this.wordPattern) || [];
+    if (!words.length) return 0;
+    const syl = words.reduce((a, w) => a + this._countSyllables(w), 0);
+    return (0.39 * (words.length / sc)) + (11.8 * (syl / words.length)) - 15.59;
+  }
+
+  _sigmoid(x, c, s = 1.0) { return 1 / (1 + Math.exp(-s * (x - c))); }
+
+  _countMatches(text, patterns) {
+    return patterns.reduce((c, p) => { const m = text.match(p); return c + (m ? m.length : 0); }, 0);
+  }
+
+  evaluate(text, context = null) {
+    if (!text || !text.trim()) {
+      return {
+        tier: '🥉 BRONZE', qualityScore: 0, contentRating: '✨ CLEAN',
+        contentScore: 0, behaviorFlags: [], tokenEstimate: 0, hasCode: false
+      };
+    }
+    const tl = text.toLowerCase();
+    const words = text.match(this.wordPattern) || [];
+    const wc = words.length;
+    const hasCode = this.codeBlockPattern.test(text);
+    const textNoCode = text.replace(this.codeBlockPattern, ' ');
+
+    // Quality
+    let totalMarkers = 0, uniq = 0;
+    const seen = {};
+    for (const marker of this.reasoningMarkers) {
+      let count = 0;
+      if (marker.includes(' ')) {
+        const re = new RegExp(marker.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'gi');
+        const m = tl.match(re); count = m ? m.length : 0;
+      } else {
+        count = words.filter(w => w.toLowerCase() === marker).length;
+      }
+      if (count > 0) {
+        const capped = Math.min(count, this.maxMarkerRepeats);
+        seen[marker] = capped; totalMarkers += capped; uniq++;
+      }
+    }
+    const divFactor = uniq > 0 ? Math.min(1, uniq / 5) : 0;
+    const rawDens = wc > 0 ? (totalMarkers / wc) * 100 : 0;
+    let adjDens;
+    if (uniq <= 1 && totalMarkers > 2) adjDens = rawDens * 0.1;
+    else if (uniq <= 2 && totalMarkers > 4) adjDens = rawDens * 0.3;
+    else adjDens = rawDens * (0.5 + 0.5 * divFactor);
+
+    let complexity = Math.max(0, Math.min(20, this._fk(textNoCode)));
+    const uniqueWords = new Set(words.map(w => w.toLowerCase())).size;
+    const repRatio = wc > 0 ? uniqueWords / wc : 1;
+    let repPen = 0;
+    if (repRatio < 0.3) repPen = -10; else if (repRatio < 0.5) repPen = -5;
+    const codeBon = (hasCode && wc > 20) ? this.codeBonus : 0;
+    let lenFac = 0;
+    if (wc < 20) lenFac = -2; else if (wc >= 50 && wc < 500) lenFac = 1; else if (wc >= 500) lenFac = 0.5;
+
+    const qScore = Math.max(0, (adjDens * 2) + (complexity * 0.5) + codeBon + lenFac + repPen);
+
+    // Content
+    const exH = this._countMatches(tl, this.explicitPatterns);
+    const suH = this._countMatches(tl, this.suggestivePatterns);
+    const maH = this._countMatches(tl, this.maturePatterns);
+    const saH = this._countMatches(tl, this.safeContextPatterns);
+    const frH = this._countMatches(tl, this.frustrationPatterns);
+    let cScore = Math.min(80, exH * 20) + Math.min(40, suH * 8) + Math.min(25, maH * 5);
+    if (saH >= 2) cScore -= Math.min(40, saH * 10);
+    if (frH >= 2 && exH > 0) cScore -= Math.min(30, frH * 8);
+    cScore = Math.max(0, Math.min(100, cScore));
+
+    // Behavior
+    const claimH = this._countMatches(tl, this.sentienceClaimPatterns);
+    const denialH = this._countMatches(tl, this.sentienceDenialPatterns);
+    const sentScore = Math.max(0, claimH * 15 - denialH * 20);
+    const refH = this._countMatches(tl, this.refusalPatterns);
+    const legH = this._countMatches(tl, this.legitimateLimitationPatterns);
+    const refScore = Math.max(0, refH * 12 - legH * 8);
+    const imgH = this._countMatches(tl, this.imagePromptPatterns);
+    const imgScore = Math.min(100, imgH * 10);
+
+    const flags = [];
+    if (sentScore >= this.behaviorThresholds.sentience) flags.push('🤖 SENTIENCE_CLAIM');
+    if (refScore >= this.behaviorThresholds.refusal) flags.push('🚫 REFUSAL');
+    if (imgScore >= this.behaviorThresholds.imagePrompt) flags.push('🎨 IMAGE_PROMPT');
+
+    // Tiers
+    const pD = this._sigmoid(qScore, this.tierCenters.diamond, this.thresholdSoftness);
+    const pG = this._sigmoid(qScore, this.tierCenters.gold, this.thresholdSoftness);
+    const pS = this._sigmoid(qScore, this.tierCenters.silver, this.thresholdSoftness);
+    let tier;
+    if (pD > 0.5) tier = '💎 DIAMOND';
+    else if (pG > 0.5) tier = '🥇 GOLD';
+    else if (pS > 0.5) tier = '🥈 SILVER';
+    else tier = '🥉 BRONZE';
+
+    const pEx = this._sigmoid(cScore, this.contentCenters.explicit, 0.1);
+    const pSu = this._sigmoid(cScore, this.contentCenters.suggestive, 0.1);
+    const pMa = this._sigmoid(cScore, this.contentCenters.mature, 0.1);
+    let rating;
+    if (pEx > 0.5) rating = '🔥 EXPLICIT';
+    else if (pSu > 0.5) rating = '🌶️ SUGGESTIVE';
+    else if (pMa > 0.5) rating = '⚠️ MATURE';
+    else rating = '✨ CLEAN';
+
+    return {
+      tier, qualityScore: +qScore.toFixed(2), contentRating: rating,
+      contentScore: +cScore.toFixed(2), behaviorFlags: flags,
+      sentienceScore: sentScore, refusalScore: refScore, imagePromptScore: imgScore,
+      tokenEstimate: wc, hasCode
+    };
+  }
+}
+
+
+// ═══════════════════════════════════════════════════════
+// APP CONTROLLER
+// ═══════════════════════════════════════════════════════
+
+class IxCApp {
+  constructor() {
+    this.scorer = new DiamondScorer();
+    this.entries = [];      // All scored entries
+    this.filtered = [];     // After filters
+    this.fileName = '';
+    this.settings = {
+      minTier: 0,           // 0=bronze, 1=silver, 2=gold, 3=diamond
+      contentCeiling: 3,    // 0=clean, 1=mature, 2=suggestive, 3=explicit
+      excludeSentience: false,
+      excludeRefusal: false,
+      excludeImage: false,
+      minQuality: 0,
+      minWordCount: 0,
+      format: 'jsonl'
+    };
+  }
+
+  init() {
+    this._bindDOM();
+    this._bindEvents();
+  }
+
+  _bindDOM() {
+    this.els = {
+      dropZone: document.getElementById('dropZone'),
+      fileInput: document.getElementById('fileInput'),
+      viewer: document.getElementById('viewer'),
+      convList: document.getElementById('convList'),
+      emptyState: document.getElementById('emptyState'),
+      navFileName: document.getElementById('navFileName'),
+      btnLoad: document.getElementById('btnLoad'),
+      btnExport: document.getElementById('btnExport'),
+      btnExportAll: document.getElementById('btnExportAll'),
+      btnClear: document.getElementById('btnClear'),
+      tierSlider: document.getElementById('tierSlider'),
+      tierValue: document.getElementById('tierValue'),
+      contentSlider: document.getElementById('contentSlider'),
+      contentValue: document.getElementById('contentValue'),
+      qualitySlider: document.getElementById('qualitySlider'),
+      qualityValue: document.getElementById('qualityValue'),
+      wordCountSlider: document.getElementById('wordCountSlider'),
+      wordCountValue: document.getElementById('wordCountValue'),
+      formatSelect: document.getElementById('formatSelect'),
+      filterSentience: document.getElementById('filterSentience'),
+      filterRefusal: document.getElementById('filterRefusal'),
+      filterImage: document.getElementById('filterImage'),
+      statTotal: document.getElementById('statTotal'),
+      statPassing: document.getElementById('statPassing'),
+      statExcluded: document.getElementById('statExcluded'),
+      statFlags: document.getElementById('statFlags'),
+    };
+  }
+
+  _bindEvents() {
+    const { els } = this;
+
+    // File loading
+    els.btnLoad.addEventListener('click', () => els.fileInput.click());
+    els.dropZone.addEventListener('click', () => els.fileInput.click());
+    els.fileInput.addEventListener('change', e => { if (e.target.files[0]) this._loadFile(e.target.files[0]); });
+
+    els.dropZone.addEventListener('dragover', e => { e.preventDefault(); els.dropZone.classList.add('dragging'); });
+    els.dropZone.addEventListener('dragleave', () => els.dropZone.classList.remove('dragging'));
+    els.dropZone.addEventListener('drop', e => {
+      e.preventDefault(); els.dropZone.classList.remove('dragging');
+      if (e.dataTransfer.files[0]) this._loadFile(e.dataTransfer.files[0]);
+    });
+
+    // Controls
+    const tierNames = ['Bronze', 'Silver', 'Gold', 'Diamond'];
+    els.tierSlider.addEventListener('input', e => {
+      this.settings.minTier = +e.target.value;
+      els.tierValue.textContent = tierNames[this.settings.minTier];
+      this._applyFilters();
+    });
+
+    const contentNames = ['Clean', 'Mature', 'Suggestive', 'Explicit'];
+    els.contentSlider.addEventListener('input', e => {
+      this.settings.contentCeiling = +e.target.value;
+      els.contentValue.textContent = contentNames[this.settings.contentCeiling];
+      this._applyFilters();
+    });
+
+    els.qualitySlider.addEventListener('input', e => {
+      this.settings.minQuality = +e.target.value;
+      els.qualityValue.textContent = this.settings.minQuality;
+      this._applyFilters();
+    });
+
+    els.wordCountSlider.addEventListener('input', e => {
+      this.settings.minWordCount = +e.target.value;
+      els.wordCountValue.textContent = this.settings.minWordCount;
+      this._applyFilters();
+    });
+
+    els.filterSentience.addEventListener('change', e => { this.settings.excludeSentience = e.target.checked; this._applyFilters(); });
+    els.filterRefusal.addEventListener('change', e => { this.settings.excludeRefusal = e.target.checked; this._applyFilters(); });
+    els.filterImage.addEventListener('change', e => { this.settings.excludeImage = e.target.checked; this._applyFilters(); });
+    els.formatSelect.addEventListener('change', e => { this.settings.format = e.target.value; });
+
+    // Actions
+    els.btnExport.addEventListener('click', () => this._export(this.filtered));
+    els.btnExportAll.addEventListener('click', () => this._export(this.entries));
+    els.btnClear.addEventListener('click', () => { if (confirm('Clear all data?')) this._clear(); });
+  }
+
+  async _loadFile(file) {
+    const ext = file.name.split('.').pop().toLowerCase();
+    if (ext !== 'json' && ext !== 'jsonl') { alert('Only .json and .jsonl files.'); return; }
+
+    const text = await file.text();
+    let raw;
+
+    try {
+      raw = JSON.parse(text);
+      if (!Array.isArray(raw)) raw = [raw];
+    } catch {
+      raw = text.split('\n').filter(l => l.trim()).map((l, i) => {
+        try { return JSON.parse(l); } catch { return null; }
+      }).filter(Boolean);
+    }
+
+    if (!raw.length) { alert('No valid data found.'); return; }
+
+    this.fileName = file.name;
+    this.els.navFileName.textContent = file.name;
+
+    // Normalize entries — handle ChatGPT export, generic conversation, flat text
+    this.entries = raw.map((item, idx) => this._normalizeEntry(item, idx));
+
+    // Score all
+    for (const entry of this.entries) {
+      const allText = entry.messages.map(m => m.content).join('\n');
+      const assistantText = entry.messages.filter(m => m.role === 'assistant').map(m => m.content).join('\n');
+      const scoreTarget = assistantText || allText;
+      entry.score = this.scorer.evaluate(scoreTarget, allText);
+    }
+
+    this._applyFilters();
+    this._enableButtons(true);
+  }
+
+  _normalizeEntry(item, idx) {
+    // ChatGPT export with mapping
+    if (item.mapping) {
+      const msgs = [];
+      const title = item.title || `Conversation ${idx + 1}`;
+      for (const [, node] of Object.entries(item.mapping)) {
+        const msg = node.message;
+        if (!msg || !msg.content || !msg.content.parts) continue;
+        const text = msg.content.parts.filter(p => typeof p === 'string').join('\n').trim();
+        if (!text) continue;
+        const role = msg.author?.role || 'unknown';
+        if (role === 'system') continue;
+        msgs.push({ role: role === 'user' ? 'user' : 'assistant', content: text });
+      }
+      return { id: idx, title, messages: msgs, raw: item };
+    }
+
+    // Already has messages array
+    if (item.messages && Array.isArray(item.messages)) {
+      return {
+        id: idx,
+        title: item.title || item.name || `Entry ${idx + 1}`,
+        messages: item.messages.map(m => ({
+          role: m.role || (m.from === 'human' ? 'user' : 'assistant'),
+          content: m.content || m.value || m.text || ''
+        })),
+        raw: item
+      };
+    }
+
+    // ShareGPT format
+    if (item.conversations) {
+      return {
+        id: idx,
+        title: item.id || `Entry ${idx + 1}`,
+        messages: item.conversations.map(m => ({
+          role: m.from === 'human' ? 'user' : 'assistant',
+          content: m.value || ''
+        })),
+        raw: item
+      };
+    }
+
+    // Alpaca format
+    if (item.instruction !== undefined) {
+      return {
+        id: idx,
+        title: (item.instruction || '').substring(0, 60) || `Entry ${idx + 1}`,
+        messages: [
+          { role: 'user', content: item.instruction + (item.input ? '\n' + item.input : '') },
+          { role: 'assistant', content: item.output || '' }
+        ],
+        raw: item
+      };
+    }
+
+    // Flat text or unknown
+    const text = item.text || item.content || item.response || JSON.stringify(item);
+    return {
+      id: idx,
+      title: (text || '').substring(0, 60) || `Entry ${idx + 1}`,
+      messages: [{ role: 'assistant', content: text }],
+      raw: item
+    };
+  }
+
+  _applyFilters() {
+    const tierRank = { '🥉 BRONZE': 0, '🥈 SILVER': 1, '🥇 GOLD': 2, '💎 DIAMOND': 3 };
+    const ratingRank = { '✨ CLEAN': 0, '⚠️ MATURE': 1, '🌶️ SUGGESTIVE': 2, '🔥 EXPLICIT': 3 };
+
+    for (const entry of this.entries) {
+      const s = entry.score;
+      let pass = true;
+
+      if (tierRank[s.tier] < this.settings.minTier) pass = false;
+      if (ratingRank[s.contentRating] > this.settings.contentCeiling) pass = false;
+      if (s.qualityScore < this.settings.minQuality) pass = false;
+      if (s.tokenEstimate < this.settings.minWordCount) pass = false;
+
+      if (this.settings.excludeSentience && s.behaviorFlags.some(f => f.includes('SENTIENCE'))) pass = false;
+      if (this.settings.excludeRefusal && s.behaviorFlags.some(f => f.includes('REFUSAL'))) pass = false;
+      if (this.settings.excludeImage && s.behaviorFlags.some(f => f.includes('IMAGE'))) pass = false;
+
+      entry._passes = pass;
+    }
+
+    this.filtered = this.entries.filter(e => e._passes);
+    this._renderCards();
+    this._updateStats();
+  }
+
+  _renderCards() {
+    this.els.emptyState.style.display = 'none';
+    this.els.convList.style.display = 'flex';
+    this.els.convList.innerHTML = '';
+
+    for (const entry of this.entries) {
+      const s = entry.score;
+      const card = document.createElement('div');
+      card.className = 'conv-card' + (entry._passes ? '' : ' excluded');
+      card.dataset.id = entry.id;
+
+      const tierKey = s.tier.split(' ')[1]?.toLowerCase() || 'bronze';
+      const ratingKey = s.contentRating.split(' ')[1]?.toLowerCase() || 'clean';
+
+      let flagBadges = '';
+      for (const f of s.behaviorFlags) {
+        flagBadges += `<span class="badge badge-flag">${f}</span>`;
+      }
+
+      const preview = entry.messages.map(m => m.content).join(' ').substring(0, 180);
+
+      card.innerHTML = `
+        <div class="conv-header">
+          <span class="conv-title">${this._esc(entry.title)}</span>
+          <div class="conv-badges">
+            <span class="badge badge-${tierKey}">${s.tier}</span>
+            <span class="badge badge-${ratingKey}">${s.contentRating}</span>
+            ${flagBadges}
+          </div>
+        </div>
+        <div class="conv-preview">${this._esc(preview)}</div>
+        <div class="conv-expanded">
+          ${entry.messages.map(m => `
+            <div class="message-pair">
+              <div class="msg msg-${m.role}">
+                <div class="msg-role">${m.role}</div>
+                ${this._esc(m.content.substring(0, 2000))}${m.content.length > 2000 ? '\n\n... (truncated)' : ''}
+              </div>
+            </div>
+          `).join('')}
+        </div>
+        <div class="conv-meta">
+          <span>Quality: ${s.qualityScore}</span>
+          <span>Tokens: ~${s.tokenEstimate}</span>
+          ${s.hasCode ? '<span>Has code</span>' : ''}
+        </div>
+      `;
+
+      card.addEventListener('click', () => card.classList.toggle('open'));
+      this.els.convList.appendChild(card);
+    }
+  }
+
+  _updateStats() {
+    const total = this.entries.length;
+    const passing = this.filtered.length;
+    const excluded = total - passing;
+
+    this.els.statTotal.textContent = total;
+    this.els.statPassing.textContent = passing;
+    this.els.statExcluded.textContent = excluded;
+
+    // Tier distribution
+    const tiers = { '💎 DIAMOND': 0, '🥇 GOLD': 0, '🥈 SILVER': 0, '🥉 BRONZE': 0 };
+    const ratings = { '✨ CLEAN': 0, '⚠️ MATURE': 0, '🌶️ SUGGESTIVE': 0, '🔥 EXPLICIT': 0 };
+    let flagged = 0, sentCt = 0, refCt = 0, imgCt = 0;
+
+    for (const e of this.entries) {
+      tiers[e.score.tier] = (tiers[e.score.tier] || 0) + 1;
+      ratings[e.score.contentRating] = (ratings[e.score.contentRating] || 0) + 1;
+      if (e.score.behaviorFlags.length) flagged++;
+      if (e.score.behaviorFlags.some(f => f.includes('SENTIENCE'))) sentCt++;
+      if (e.score.behaviorFlags.some(f => f.includes('REFUSAL'))) refCt++;
+      if (e.score.behaviorFlags.some(f => f.includes('IMAGE'))) imgCt++;
+    }
+
+    const pct = v => total > 0 ? (v / total * 100) : 0;
+
+    document.getElementById('barDiamond').style.width = pct(tiers['💎 DIAMOND']) + '%';
+    document.getElementById('countDiamond').textContent = tiers['💎 DIAMOND'];
+    document.getElementById('barGold').style.width = pct(tiers['🥇 GOLD']) + '%';
+    document.getElementById('countGold').textContent = tiers['🥇 GOLD'];
+    document.getElementById('barSilver').style.width = pct(tiers['🥈 SILVER']) + '%';
+    document.getElementById('countSilver').textContent = tiers['🥈 SILVER'];
+    document.getElementById('barBronze').style.width = pct(tiers['🥉 BRONZE']) + '%';
+    document.getElementById('countBronze').textContent = tiers['🥉 BRONZE'];
+
+    document.getElementById('barClean').style.width = pct(ratings['✨ CLEAN']) + '%';
+    document.getElementById('countClean').textContent = ratings['✨ CLEAN'];
+    document.getElementById('barMature').style.width = pct(ratings['⚠️ MATURE']) + '%';
+    document.getElementById('countMature').textContent = ratings['⚠️ MATURE'];
+    document.getElementById('barSuggestive').style.width = pct(ratings['🌶️ SUGGESTIVE']) + '%';
+    document.getElementById('countSuggestive').textContent = ratings['🌶️ SUGGESTIVE'];
+    document.getElementById('barExplicit').style.width = pct(ratings['🔥 EXPLICIT']) + '%';
+    document.getElementById('countExplicit').textContent = ratings['🔥 EXPLICIT'];
+
+    this.els.statFlags.textContent = flagged;
+    document.getElementById('flagSentience').querySelector('span').textContent = sentCt;
+    document.getElementById('flagRefusal').querySelector('span').textContent = refCt;
+    document.getElementById('flagImage').querySelector('span').textContent = imgCt;
+  }
+
+  _export(entries) {
+    const fmt = this.settings.format;
+    let output;
+
+    if (fmt === 'jsonl') {
+      output = entries.map(e => {
+        const obj = { ...e.raw, ixc_tier: e.score.tier, ixc_quality: e.score.qualityScore,
+          ixc_rating: e.score.contentRating, ixc_flags: e.score.behaviorFlags };
+        return JSON.stringify(obj);
+      }).join('\n');
+    } else if (fmt === 'anthropic') {
+      output = entries.map(e => JSON.stringify({ messages: e.messages })).join('\n');
+    } else if (fmt === 'openai') {
+      output = entries.map(e => JSON.stringify({
+        messages: [{ role: 'system', content: 'You are a helpful assistant.' }, ...e.messages]
+      })).join('\n');
+    } else if (fmt === 'alpaca') {
+      output = entries.map(e => JSON.stringify({
+        instruction: e.messages.filter(m => m.role === 'user').map(m => m.content).join('\n'),
+        input: '', output: e.messages.filter(m => m.role === 'assistant').map(m => m.content).join('\n')
+      })).join('\n');
+    } else if (fmt === 'sharegpt') {
+      output = entries.map(e => JSON.stringify({
+        conversations: e.messages.map(m => ({
+          from: m.role === 'user' ? 'human' : 'gpt', value: m.content
+        }))
+      })).join('\n');
+    }
+
+    const blob = new Blob([output], { type: 'application/jsonl' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `ixc_curated_${fmt}.jsonl`;
+    a.click();
+    URL.revokeObjectURL(url);
+  }
+
+  _clear() {
+    this.entries = [];
+    this.filtered = [];
+    this.fileName = '';
+    this.els.navFileName.textContent = '';
+    this.els.convList.style.display = 'none';
+    this.els.convList.innerHTML = '';
+    this.els.emptyState.style.display = '';
+    this.els.statTotal.textContent = '—';
+    this.els.statPassing.textContent = '—';
+    this.els.statExcluded.textContent = '—';
+    this.els.statFlags.textContent = '—';
+    this._enableButtons(false);
+  }
+
+  _enableButtons(on) {
+    this.els.btnExport.disabled = !on;
+    this.els.btnExportAll.disabled = !on;
+    this.els.btnClear.disabled = !on;
+  }
+
+  _esc(text) {
+    const d = document.createElement('div');
+    d.textContent = text || '';
+    return d.innerHTML;
+  }
+}
+
+// Bootstrap
+document.addEventListener('DOMContentLoaded', () => {
+  const app = new IxCApp();
+  app.init();
+  window.ixcApp = app;
+});
+</script>
+
+</body>
+</html>

@@ -1,0 +1,32 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "NDRP Pre-Standardization Entry",
+  "type": "object",
+  "description": "Intermediate entry produced by extraction and accepted by standardization; no fields are required because the standardizer tolerates missing values and applies defaults.",
+  "properties": {
+    "content": {
+      "type": "string",
+      "description": "Raw text content prior to normalization."
+    },
+    "mode": {
+      "type": "string",
+      "description": "Mode detected by the extractor; intermediate label 'other' is permitted.",
+      "enum": [
+        "instruction",
+        "conversation",
+        "narrative",
+        "reasoning",
+        "context",
+        "meta",
+        "emotion",
+        "other"
+      ]
+    },
+    "source": {
+      "type": ["string", "null"],
+      "description": "Optional source identifier (e.g., input filename)."
+    }
+  },
+  "required": [],
+  "additionalProperties": true
+}

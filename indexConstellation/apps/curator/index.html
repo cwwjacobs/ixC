@@ -1,0 +1,903 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LLM Pair Curator - Conversation Dataset Curation</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg-primary: #0d1117;
+            --bg-secondary: #161b22;
+            --bg-tertiary: #21262d;
+            --border-color: #30363d;
+            --text-primary: #e6edf3;
+            --text-secondary: #8b949e;
+            --accent-blue: #58a6ff;
+            --accent-green: #3fb950;
+            --accent-purple: #bc8cff;
+            --accent-gold: #f0c040;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+        }
+
+        .container {
+            display: grid;
+            grid-template-columns: 320px 1fr;
+            grid-template-rows: 60px 1fr;
+            height: 100vh;
+            gap: 1px;
+            background: var(--border-color);
+        }
+
+        header {
+            grid-column: 1 / -1;
+            background: var(--bg-secondary);
+            padding: 0 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .logo {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--accent-blue);
+        }
+
+        .toolbar {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .btn {
+            padding: 0.5rem 1rem;
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border-color);
+            color: var(--text-primary);
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.875rem;
+            transition: all 0.2s;
+        }
+
+        .btn:hover {
+            background: var(--accent-blue);
+            border-color: var(--accent-blue);
+        }
+
+        .btn-primary {
+            background: var(--accent-blue);
+            border-color: var(--accent-blue);
+        }
+
+        .btn-primary:hover {
+            background: #4a94e6;
+        }
+
+        .sidebar {
+            background: var(--bg-secondary);
+            overflow-y: auto;
+            padding: 1.5rem;
+        }
+
+        .main-content {
+            background: var(--bg-primary);
+            overflow-y: auto;
+            padding: 1.5rem;
+        }
+
+        .card {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            padding: 1.25rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .card-title {
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: var(--text-secondary);
+            margin-bottom: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .stat {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.5rem 0;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .stat:last-child {
+            border-bottom: none;
+        }
+
+        .stat-label {
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+        }
+
+        .stat-value {
+            color: var(--accent-green);
+            font-weight: 600;
+        }
+
+        .filter-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .filter-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+        }
+
+        .checkbox-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .checkbox-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .checkbox-item input[type="checkbox"] {
+            width: 16px;
+            height: 16px;
+        }
+
+        .slider-container {
+            padding: 0.5rem 0;
+        }
+
+        input[type="range"] {
+            width: 100%;
+            height: 4px;
+            background: var(--bg-tertiary);
+            border-radius: 2px;
+            outline: none;
+        }
+
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 16px;
+            height: 16px;
+            background: var(--accent-blue);
+            cursor: pointer;
+            border-radius: 50%;
+        }
+
+        .slider-values {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            margin-top: 0.5rem;
+        }
+
+        .conversation-item {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .conversation-item:hover {
+            border-color: var(--accent-blue);
+            background: var(--bg-tertiary);
+        }
+
+        .conversation-item.selected {
+            border-color: var(--accent-blue);
+            background: var(--bg-tertiary);
+        }
+
+        .conv-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.5rem;
+        }
+
+        .conv-id {
+            font-weight: 600;
+            color: var(--accent-blue);
+        }
+
+        .conv-type {
+            font-size: 0.75rem;
+            padding: 0.25rem 0.5rem;
+            background: var(--bg-tertiary);
+            border-radius: 4px;
+            color: var(--accent-gold);
+        }
+
+        .conv-stats {
+            display: flex;
+            gap: 1rem;
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+        }
+
+        .density-badge {
+            font-weight: 600;
+            color: var(--accent-green);
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 4rem 2rem;
+            color: var(--text-secondary);
+        }
+
+        .empty-state-icon {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+            opacity: 0.5;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 2rem;
+            color: var(--text-secondary);
+        }
+
+        .spinner {
+            border: 3px solid var(--bg-tertiary);
+            border-top: 3px solid var(--accent-blue);
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 1rem;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: var(--bg-tertiary);
+            border-radius: 4px;
+            overflow: hidden;
+            margin-top: 0.5rem;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: var(--accent-blue);
+            transition: width 0.3s;
+        }
+
+        #file-input {
+            display: none;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                grid-template-columns: 1fr;
+            }
+            .sidebar {
+                border-bottom: 1px solid var(--border-color);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="logo">📊 LLM Pair Curator</div>
+            <div class="toolbar">
+                <button class="btn btn-primary" onclick="loadFile()">📁 Load File</button>
+                <button class="btn" onclick="exportData()">💾 Export</button>
+                <button class="btn" onclick="clearData()">🗑️ Clear</button>
+            </div>
+        </header>
+
+        <aside class="sidebar">
+            <!-- Stats Card -->
+            <div class="card">
+                <div class="card-title">📊 Dataset Stats</div>
+                <div class="stat">
+                    <span class="stat-label">Total Pairs</span>
+                    <span class="stat-value" id="total-pairs">0</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-label">After Filters</span>
+                    <span class="stat-value" id="filtered-pairs">0</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-label">Selected</span>
+                    <span class="stat-value" id="selected-pairs">0</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-label">Avg Density</span>
+                    <span class="stat-value" id="avg-density">0.0</span>
+                </div>
+            </div>
+
+            <!-- Corpus Type Filter -->
+            <div class="card">
+                <div class="card-title">🎯 Corpus Type</div>
+                <div class="filter-group">
+                    <div class="checkbox-group">
+                        <label class="checkbox-item">
+                            <input type="checkbox" value="code" onchange="applyFilters()" checked>
+                            <span>Code (<span id="count-code">0</span>)</span>
+                        </label>
+                        <label class="checkbox-item">
+                            <input type="checkbox" value="reasoning" onchange="applyFilters()" checked>
+                            <span>Reasoning (<span id="count-reasoning">0</span>)</span>
+                        </label>
+                        <label class="checkbox-item">
+                            <input type="checkbox" value="creative" onchange="applyFilters()" checked>
+                            <span>Creative (<span id="count-creative">0</span>)</span>
+                        </label>
+                        <label class="checkbox-item">
+                            <input type="checkbox" value="technical" onchange="applyFilters()" checked>
+                            <span>Technical (<span id="count-technical">0</span>)</span>
+                        </label>
+                        <label class="checkbox-item">
+                            <input type="checkbox" value="chat" onchange="applyFilters()" checked>
+                            <span>Chat (<span id="count-chat">0</span>)</span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Density Filter -->
+            <div class="card">
+                <div class="card-title">📈 Signal Density</div>
+                <div class="filter-group">
+                    <label>Minimum: <span id="min-density-val">0.0</span></label>
+                    <div class="slider-container">
+                        <input type="range" id="min-density" min="0" max="10" step="0.1" value="0" oninput="updateDensityFilter()">
+                    </div>
+                </div>
+                <div class="filter-group">
+                    <label>Maximum: <span id="max-density-val">10.0</span></label>
+                    <div class="slider-container">
+                        <input type="range" id="max-density" min="0" max="10" step="0.1" value="10" oninput="updateDensityFilter()">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Advanced Filters -->
+            <div class="card">
+                <div class="card-title">🎛️ Advanced</div>
+                <div class="filter-group">
+                    <label>Token Range</label>
+                    <div class="slider-values">
+                        <span id="min-tokens-val">0</span>
+                        <span id="max-tokens-val">5000</span>
+                    </div>
+                    <input type="range" id="min-tokens" min="0" max="5000" step="100" value="0" oninput="updateTokenFilter()">
+                    <input type="range" id="max-tokens" min="0" max="5000" step="100" value="5000" oninput="updateTokenFilter()">
+                </div>
+                <div class="filter-group">
+                    <label>Turn Count</label>
+                    <div class="slider-values">
+                        <span id="min-turns-val">1</span>
+                        <span id="max-turns-val">50</span>
+                    </div>
+                    <input type="range" id="min-turns" min="1" max="50" value="1" oninput="updateTurnFilter()">
+                    <input type="range" id="max-turns" min="1" max="50" value="50" oninput="updateTurnFilter()">
+                </div>
+                <div class="checkbox-group">
+                    <label class="checkbox-item">
+                        <input type="checkbox" id="has-code" onchange="applyFilters()">
+                        <span>Has Code Blocks</span>
+                    </label>
+                    <label class="checkbox-item">
+                        <input type="checkbox" id="has-reasoning" onchange="applyFilters()">
+                        <span>Has Reasoning</span>
+                    </label>
+                </div>
+            </div>
+        </aside>
+
+        <main class="main-content">
+            <div id="loading-state" class="loading hidden">
+                <div class="spinner"></div>
+                <p>Analyzing conversations...</p>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progress-fill"></div>
+                </div>
+                <p id="progress-text">0 / 0 processed</p>
+            </div>
+
+            <div id="empty-state" class="empty-state">
+                <div class="empty-state-icon">📂</div>
+                <h2>No conversations loaded</h2>
+                <p>Click "Load File" to import JSON or JSONL conversation data</p>
+                <br>
+                <p style="font-size: 0.875rem; color: var(--text-secondary);">
+                    Supports: ChatGPT exports, Claude conversations, OpenAI/Anthropic API logs
+                </p>
+            </div>
+
+            <div id="conversation-list" class="hidden"></div>
+        </main>
+    </div>
+
+    <input type="file" id="file-input" accept=".json,.jsonl" onchange="handleFileSelect(event)">
+
+    <script>
+        // State
+        let allConversations = [];
+        let filteredConversations = [];
+        let selectedConversations = new Set();
+
+        // Load file dialog
+        function loadFile() {
+            document.getElementById('file-input').click();
+        }
+
+        // Handle file selection
+        async function handleFileSelect(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            showLoading(true);
+            
+            try {
+                const text = await file.text();
+                const conversations = parseConversations(text);
+                
+                // Analyze in chunks to avoid blocking
+                await analyzeConversations(conversations);
+                
+                allConversations = conversations;
+                applyFilters();
+                showLoading(false);
+                
+            } catch (error) {
+                alert('Error parsing file: ' + error.message);
+                showLoading(false);
+            }
+        }
+
+        // Parse different conversation formats
+        function parseConversations(text) {
+            // Try JSONL first (one object per line)
+            if (text.includes('\n{')) {
+                const lines = text.trim().split('\n');
+                return lines.map((line, idx) => {
+                    const obj = JSON.parse(line);
+                    return normalizeConversation(obj, idx);
+                });
+            }
+            
+            // Try standard JSON
+            const data = JSON.parse(text);
+            
+            // Array of conversations
+            if (Array.isArray(data)) {
+                return data.map((conv, idx) => normalizeConversation(conv, idx));
+            }
+            
+            // Single conversation
+            return [normalizeConversation(data, 0)];
+        }
+
+        // Normalize different conversation formats to standard schema
+        function normalizeConversation(raw, index) {
+            // Detect format and extract messages
+            let messages = [];
+            
+            if (raw.messages) {
+                messages = raw.messages;
+            } else if (raw.conversation) {
+                messages = raw.conversation;
+            } else if (raw.turns) {
+                messages = raw.turns;
+            } else if (Array.isArray(raw)) {
+                messages = raw;
+            }
+
+            // Ensure each message has role and content
+            messages = messages.map(msg => ({
+                role: msg.role || msg.sender || 'unknown',
+                content: msg.content || msg.text || msg.message || ''
+            }));
+
+            return {
+                id: raw.id || `conv_${index}`,
+                messages: messages,
+                metadata: raw.metadata || {},
+                // Will be computed during analysis
+                metrics: null
+            };
+        }
+
+        // Analyze conversations (compute metrics)
+        async function analyzeConversations(conversations) {
+            const total = conversations.length;
+            
+            for (let i = 0; i < total; i++) {
+                conversations[i].metrics = computeMetrics(conversations[i]);
+                
+                // Update progress every 10 items
+                if (i % 10 === 0) {
+                    updateProgress(i + 1, total);
+                    await sleep(0); // Yield to browser
+                }
+            }
+            
+            updateProgress(total, total);
+        }
+
+        // Compute density and quality metrics
+        function computeMetrics(conversation) {
+            const messages = conversation.messages;
+            const fullText = messages.map(m => m.content).join(' ');
+            
+            // Token estimation (rough: 1 token ~= 4 chars)
+            const tokens = Math.ceil(fullText.length / 4);
+            
+            // Word analysis
+            const words = fullText.toLowerCase().split(/\s+/);
+            const uniqueWords = new Set(words);
+            
+            // Type-token ratio (vocabulary diversity)
+            const typeTokenRatio = uniqueWords.size / words.length;
+            
+            // Technical term detection (simple heuristic)
+            const technicalTerms = words.filter(w => 
+                w.length > 8 || 
+                /^[a-z]+[A-Z]/.test(w) || // camelCase
+                w.includes('_') || // snake_case
+                /\d/.test(w) // contains numbers
+            );
+            const technicalDensity = technicalTerms.length / words.length;
+            
+            // Filler detection
+            const fillerPhrases = [
+                'i understand', 'let me help', 'of course', 'certainly',
+                'i apologize', 'i see', 'great question', 'happy to help'
+            ];
+            const fillerCount = fillerPhrases.reduce((count, phrase) => 
+                count + (fullText.toLowerCase().split(phrase).length - 1), 0
+            );
+            const fillerRatio = fillerCount / words.length;
+            
+            // Code detection
+            const hasCode = fullText.includes('```') || 
+                           fullText.includes('function ') ||
+                           fullText.includes('def ') ||
+                           fullText.includes('class ');
+            
+            // Reasoning detection
+            const reasoningPatterns = [
+                'step by step', 'reasoning:', 'analysis:', 'therefore',
+                'because', 'first,', 'second,', 'finally,', 'let\'s think'
+            ];
+            const hasReasoning = reasoningPatterns.some(p => 
+                fullText.toLowerCase().includes(p)
+            );
+            
+            // Corpus type classification
+            const corpusType = classifyCorpusType(fullText, hasCode, hasReasoning);
+            
+            // Signal density score (0-10)
+            const densityScore = calculateDensityScore({
+                typeTokenRatio,
+                technicalDensity,
+                fillerRatio,
+                hasCode,
+                hasReasoning,
+                tokens,
+                turns: messages.length
+            });
+            
+            return {
+                tokens,
+                turns: messages.length,
+                typeTokenRatio: typeTokenRatio.toFixed(3),
+                technicalDensity: technicalDensity.toFixed(3),
+                fillerRatio: fillerRatio.toFixed(3),
+                hasCode,
+                hasReasoning,
+                corpusType,
+                densityScore: densityScore.toFixed(1)
+            };
+        }
+
+        // Classify conversation type
+        function classifyCorpusType(text, hasCode, hasReasoning) {
+            const lower = text.toLowerCase();
+            
+            if (hasCode) return 'code';
+            if (hasReasoning) return 'reasoning';
+            if (lower.includes('story') || lower.includes('creative')) return 'creative';
+            if (lower.includes('technical') || lower.includes('algorithm')) return 'technical';
+            return 'chat';
+        }
+
+        // Calculate composite density score
+        function calculateDensityScore(metrics) {
+            let score = 0;
+            
+            // Vocabulary diversity (0-3 points)
+            score += Math.min(metrics.typeTokenRatio * 6, 3);
+            
+            // Technical depth (0-2 points)
+            score += Math.min(metrics.technicalDensity * 4, 2);
+            
+            // Code presence (0-2 points)
+            if (metrics.hasCode) score += 2;
+            
+            // Reasoning artifacts (0-2 points)
+            if (metrics.hasReasoning) score += 2;
+            
+            // Penalize filler (0-1 point deduction)
+            score -= Math.min(metrics.fillerRatio * 10, 1);
+            
+            // Bonus for substantive length (0-1 point)
+            if (metrics.tokens > 500 && metrics.tokens < 2000) score += 1;
+            
+            return Math.max(0, Math.min(10, score));
+        }
+
+        // Apply filters
+        function applyFilters() {
+            const selectedTypes = Array.from(
+                document.querySelectorAll('.checkbox-item input[type="checkbox"]:checked')
+            ).map(cb => cb.value).filter(v => v); // Remove undefined
+
+            const minDensity = parseFloat(document.getElementById('min-density').value);
+            const maxDensity = parseFloat(document.getElementById('max-density').value);
+            const minTokens = parseInt(document.getElementById('min-tokens').value);
+            const maxTokens = parseInt(document.getElementById('max-tokens').value);
+            const minTurns = parseInt(document.getElementById('min-turns').value);
+            const maxTurns = parseInt(document.getElementById('max-turns').value);
+            const requiresCode = document.getElementById('has-code').checked;
+            const requiresReasoning = document.getElementById('has-reasoning').checked;
+
+            filteredConversations = allConversations.filter(conv => {
+                const m = conv.metrics;
+                if (!m) return false;
+
+                if (!selectedTypes.includes(m.corpusType)) return false;
+                if (parseFloat(m.densityScore) < minDensity) return false;
+                if (parseFloat(m.densityScore) > maxDensity) return false;
+                if (m.tokens < minTokens || m.tokens > maxTokens) return false;
+                if (m.turns < minTurns || m.turns > maxTurns) return false;
+                if (requiresCode && !m.hasCode) return false;
+                if (requiresReasoning && !m.hasReasoning) return false;
+
+                return true;
+            });
+
+            renderConversationList();
+            updateStats();
+        }
+
+        // Render conversation list
+        function renderConversationList() {
+            const listEl = document.getElementById('conversation-list');
+            const emptyEl = document.getElementById('empty-state');
+
+            if (filteredConversations.length === 0) {
+                listEl.classList.add('hidden');
+                emptyEl.classList.remove('hidden');
+                emptyEl.innerHTML = `
+                    <div class="empty-state-icon">🔍</div>
+                    <h2>No conversations match filters</h2>
+                    <p>Try adjusting your filter settings</p>
+                `;
+                return;
+            }
+
+            emptyEl.classList.add('hidden');
+            listEl.classList.remove('hidden');
+
+            listEl.innerHTML = filteredConversations.map(conv => {
+                const m = conv.metrics;
+                return `
+                    <div class="conversation-item" onclick="selectConversation('${conv.id}')">
+                        <div class="conv-header">
+                            <span class="conv-id">${conv.id}</span>
+                            <span class="conv-type">${m.corpusType}</span>
+                        </div>
+                        <div class="conv-stats">
+                            <span>${m.tokens} tokens</span>
+                            <span>${m.turns} turns</span>
+                            <span class="density-badge">Density: ${m.densityScore}</span>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // Update stats display
+        function updateStats() {
+            document.getElementById('total-pairs').textContent = allConversations.length;
+            document.getElementById('filtered-pairs').textContent = filteredConversations.length;
+            document.getElementById('selected-pairs').textContent = selectedConversations.size;
+
+            if (filteredConversations.length > 0) {
+                const avgDensity = filteredConversations.reduce((sum, c) => 
+                    sum + parseFloat(c.metrics.densityScore), 0
+                ) / filteredConversations.length;
+                document.getElementById('avg-density').textContent = avgDensity.toFixed(1);
+            }
+
+            // Update corpus type counts
+            const typeCounts = {};
+            allConversations.forEach(c => {
+                const type = c.metrics?.corpusType || 'unknown';
+                typeCounts[type] = (typeCounts[type] || 0) + 1;
+            });
+
+            Object.keys(typeCounts).forEach(type => {
+                const el = document.getElementById(`count-${type}`);
+                if (el) el.textContent = typeCounts[type];
+            });
+        }
+
+        // Filter update handlers
+        function updateDensityFilter() {
+            document.getElementById('min-density-val').textContent = 
+                document.getElementById('min-density').value;
+            document.getElementById('max-density-val').textContent = 
+                document.getElementById('max-density').value;
+            applyFilters();
+        }
+
+        function updateTokenFilter() {
+            document.getElementById('min-tokens-val').textContent = 
+                document.getElementById('min-tokens').value;
+            document.getElementById('max-tokens-val').textContent = 
+                document.getElementById('max-tokens').value;
+            applyFilters();
+        }
+
+        function updateTurnFilter() {
+            document.getElementById('min-turns-val').textContent = 
+                document.getElementById('min-turns').value;
+            document.getElementById('max-turns-val').textContent = 
+                document.getElementById('max-turns').value;
+            applyFilters();
+        }
+
+        // Select conversation
+        function selectConversation(id) {
+            if (selectedConversations.has(id)) {
+                selectedConversations.delete(id);
+            } else {
+                selectedConversations.add(id);
+            }
+            updateStats();
+        }
+
+        // Export data
+        function exportData() {
+            if (filteredConversations.length === 0) {
+                alert('No conversations to export. Load a file first.');
+                return;
+            }
+
+            const format = prompt('Export format:\n1. JSONL (training)\n2. JSON (readable)\n3. CSV (spreadsheet)\n\nEnter 1, 2, or 3:', '1');
+            
+            let blob, filename;
+            
+            switch(format) {
+                case '1':
+                    const jsonl = filteredConversations.map(c => 
+                        JSON.stringify({messages: c.messages, metadata: c.metrics})
+                    ).join('\n');
+                    blob = new Blob([jsonl], {type: 'application/jsonl'});
+                    filename = 'curated_conversations.jsonl';
+                    break;
+                case '2':
+                    const json = JSON.stringify(filteredConversations, null, 2);
+                    blob = new Blob([json], {type: 'application/json'});
+                    filename = 'curated_conversations.json';
+                    break;
+                case '3':
+                    const csv = conversationsToCSV(filteredConversations);
+                    blob = new Blob([csv], {type: 'text/csv'});
+                    filename = 'curated_conversations.csv';
+                    break;
+                default:
+                    return;
+            }
+
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = filename;
+            a.click();
+            URL.revokeObjectURL(url);
+        }
+
+        function conversationsToCSV(conversations) {
+            const headers = ['id', 'type', 'tokens', 'turns', 'density', 'has_code', 'has_reasoning'];
+            const rows = conversations.map(c => [
+                c.id,
+                c.metrics.corpusType,
+                c.metrics.tokens,
+                c.metrics.turns,
+                c.metrics.densityScore,
+                c.metrics.hasCode,
+                c.metrics.hasReasoning
+            ]);
+            
+            return [headers, ...rows].map(row => row.join(',')).join('\n');
+        }
+
+        // Clear all data
+        function clearData() {
+            if (!confirm('Clear all loaded conversations?')) return;
+            
+            allConversations = [];
+            filteredConversations = [];
+            selectedConversations.clear();
+            
+            document.getElementById('conversation-list').classList.add('hidden');
+            document.getElementById('empty-state').classList.remove('hidden');
+            document.getElementById('empty-state').innerHTML = `
+                <div class="empty-state-icon">📂</div>
+                <h2>No conversations loaded</h2>
+                <p>Click "Load File" to import JSON or JSONL conversation data</p>
+            `;
+            
+            updateStats();
+        }
+
+        // Loading state
+        function showLoading(show) {
+            document.getElementById('loading-state').classList.toggle('hidden', !show);
+            document.getElementById('empty-state').classList.toggle('hidden', show);
+            document.getElementById('conversation-list').classList.add('hidden');
+        }
+
+        function updateProgress(current, total) {
+            const percent = (current / total) * 100;
+            document.getElementById('progress-fill').style.width = percent + '%';
+            document.getElementById('progress-text').textContent = 
+                `${current} / ${total} processed`;
+        }
+
+        // Utility
+        function sleep(ms) {
+            return new Promise(resolve => setTimeout(resolve, ms));
+        }
+
+        // Initialize
+        console.log('🚀 LLM Pair Curator loaded');
+        console.log('💾 All data stays local - nothing is uploaded');
+        console.log('🔒 Privacy-first, sovereignty-respecting design');
+    </script>
+</body>
+</html>

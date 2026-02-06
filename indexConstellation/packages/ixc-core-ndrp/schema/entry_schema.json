@@ -1,0 +1,109 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "NDRP Entry Schema",
+  "type": "object",
+  "required": [
+    "role",
+    "content",
+    "intent",
+    "mode",
+    "meaning_preserved",
+    "density_goal",
+    "entropy_class"
+  ],
+  "properties": {
+    "role": {
+      "type": "string",
+      "enum": [
+        "user",
+        "assistant",
+        "system"
+      ]
+    },
+    "content": {
+      "type": "string",
+      "description": "Cleaned, structured text after standardization."
+    },
+    "intent": {
+      "type": "string",
+      "description": "Purpose of the message (instruction, question, emotional, contextual, narrative, etc.)"
+    },
+    "mode": {
+      "type": "string",
+      "description": "Message type determined during extraction.",
+      "enum": [
+        "instruction",
+        "conversation",
+        "narrative",
+        "reasoning",
+        "context",
+        "meta",
+        "emotion"
+      ]
+    },
+    "context": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "Clarified supporting information for the entry."
+    },
+    "reasoning_expanded": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "Optional field added during enhancement to increase density."
+    },
+    "metadata": {
+      "type": "object",
+      "properties": {
+        "source_id": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "timestamp": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "persona_style": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "lfsl_enabled": {
+          "type": "boolean"
+        }
+      },
+      "additionalProperties": true
+    },
+    "meaning_preserved": {
+      "type": "boolean",
+      "description": "Indicator confirming the refined text still matches the original meaning."
+    },
+    "density_goal": {
+      "type": "string",
+      "enum": [
+        "low",
+        "medium",
+        "high"
+      ],
+      "description": "Defines how compact the meaning should be after enhancement."
+    },
+    "entropy_class": {
+      "type": "string",
+      "enum": [
+        "low",
+        "medium",
+        "high"
+      ],
+      "description": "Assessed entropy of the entry after standardization."
+    }
+  },
+  "$id": "ixc.schema.ndrp.entry.v1"
+}

@@ -1,0 +1,16 @@
+$id: ixc.schema.intent.v1
+type: object
+required:
+  - intent_id
+  - goal
+  - source_type
+properties:
+  intent_id:
+    type: string
+  goal:
+    type: string
+  source_type:
+    type: string
+    enum: [chat, document, log, manual]
+  notes:
+    type: string
